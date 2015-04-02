@@ -3,10 +3,9 @@ package com.dk.view.patheffect;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathDashPathEffect;
-import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,70 +16,58 @@ import java.util.ArrayList;
  * Created by DK on 2015/4/1.
  */
 public class PathTextView extends View {
-    private String mText = "Hello";
-    private ArrayList<float[]> mPaths;
+    private String mText = "FUCK";
+    private ArrayList<float[]> mDatas;
+    private ArrayList<Path> mPaths = new ArrayList<Path>();
     private Paint mPaint = new Paint();
     private ObjectAnimator mSvgAnimator;
     private final Object mSvgLock = new Object();
-
     private float mPhase;
 
     public PathTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStrokeWidth(2);
     }
 
-    private void init() {
-        mPaths = MatchPath.getPath(mText);
-//        mSvgAnimator = ObjectAnimator.ofFloat(this, "phase", 0.0f, 1.0f).setDuration(2000);
-//        mSvgAnimator.start();
+    public void init(String text) {
+        if (text == null || text.length() == 0)
+            return;
+
+        mText = text;
+        mDatas = MatchPath.getPath(mText);
+        mSvgAnimator = ObjectAnimator.ofFloat(this, "phase", 0.0f, 1.0f).setDuration(2000);
+        mSvgAnimator.start();
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (mPaths == null)
+            return;
         synchronized (mSvgLock) {
-            Path path = new Path();
-            path.moveTo(mPaths.get(0)[0], mPaths.get(0)[1]);
-            path.lineTo(mPaths.get(0)[2], mPaths.get(0)[3]);
-            path.moveTo(mPaths.get(1)[0], mPaths.get(1)[1]);
-            path.lineTo(mPaths.get(1)[2], mPaths.get(1)[3]);
-            path.moveTo(mPaths.get(2)[0], mPaths.get(2)[1]);
-            path.lineTo(mPaths.get(2)[2], mPaths.get(2)[3]);
-
-            PathMeasure measure = new PathMeasure(path, false);
-            Path dst = new Path();
-            dst.rewind();
-            float l = measure.getLength();
-
-            mPaint.setPathEffect(createConcaveArrowPathEffect(l, 0.7f, 32));
-            boolean b = measure.getSegment(0, 0.7f * measure.getLength(), dst, true);
-            canvas.drawPath(dst, mPaint);
+            for (int i = 0; i < mPaths.size(); i++)
+                canvas.drawPath(mPaths.get(i), mPaint);
         }
     }
 
-    private PathEffect createConcaveArrowPathEffect(float pathLength, float phase, float offset) {
-        return new PathDashPathEffect(makeConcaveArrow(5, 5), 5 * 1.2f,
-                Math.max(0.5f * pathLength, offset), PathDashPathEffect.Style.ROTATE);
-    }
 
     private void updatePathsPhaseLocked() {
+        mPaths.clear();
 
+        for (int i = 0; i < mDatas.size(); i++) {
+            Path path = new Path();
+            path.moveTo(mDatas.get(i)[0], mDatas.get(i)[1]);
+            path.lineTo(mDatas.get(i)[2], mDatas.get(i)[3]);
+            PathMeasure measure = new PathMeasure(path, false);
+            Path dst = new Path();
+            measure.getSegment(0.0f, mPhase * measure.getLength(), dst, true);
+            mPaths.add(dst);
+        }
     }
-
-    private static Path makeConcaveArrow(float length, float height) {
-        Path p = new Path();
-        p.moveTo(-2.0f, -height / 2.0f);
-        p.lineTo(length - height / 4.0f, -height / 2.0f);
-        p.lineTo(length, 0.0f);
-        p.lineTo(length - height / 4.0f, height / 2.0f);
-        p.lineTo(-2.0f, height / 2.0f);
-        p.lineTo(-2.0f + height / 4.0f, 0.0f);
-        p.close();
-        return p;
-    }
-
 
     public float getPhase() {
         return mPhase;
