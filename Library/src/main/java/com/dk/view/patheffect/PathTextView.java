@@ -23,6 +23,11 @@ public class PathTextView extends View {
     private ObjectAnimator mSvgAnimator;
     private final Object mSvgLock = new Object();
     private float mPhase;
+    private TYPE mType = TYPE.MULTIPY;
+
+    public enum TYPE {
+        SINGLE, MULTIPY
+    }
 
     public PathTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,7 +69,12 @@ public class PathTextView extends View {
             path.lineTo(mDatas.get(i)[2], mDatas.get(i)[3]);
             PathMeasure measure = new PathMeasure(path, false);
             Path dst = new Path();
-            measure.getSegment(0.0f, mPhase * measure.getLength(), dst, true);
+
+            if (mType == TYPE.MULTIPY)
+                measure.getSegment(0.0f, mPhase * measure.getLength(), dst, true);
+            else
+                measure.getSegment(0.0f, mPhase * measure.getLength(), dst, true);
+
             mPaths.add(dst);
         }
     }
