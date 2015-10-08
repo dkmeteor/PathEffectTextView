@@ -24,26 +24,47 @@ public class PathTextView extends View {
     private ObjectAnimator mSvgAnimator;
     private final Object mSvgLock = new Object();
     private float mPhase;
-    private TYPE mType = TYPE.SINGLE;
+    private Type mType = Type.SINGLE;
     private float mScaleFactor = 1.0f;
 
-    public enum TYPE {
-        SINGLE, MULTIPY
+    private int mTextColor = Color.BLACK;
+    private float mTextSize = BASE_SQUARE_UNIT;
+    private float mTextWeight = 2;
+
+    public enum Type {
+        SINGLE, MULTIPLY
     }
 
     public PathTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setStrokeWidth(2);
+        mPaint.setColor(mTextColor);
+        mPaint.setStrokeWidth(mTextWeight);
     }
 
+    public void setTextColor(int color) {
+        mTextColor = color;
+        mPaint.setColor(color);
+    }
+
+    public void setTextWeight(int weight) {
+        mTextWeight = weight;
+        mPaint.setStrokeWidth(mTextWeight);
+    }
+
+    public void setTextSize(float size) {
+        mTextSize = size;
+        mScaleFactor = mTextSize / BASE_SQUARE_UNIT;
+    }
+
+    public void setPaintType(Type type) {
+        mType = type;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(measureWidth(widthMeasureSpec),
                 measureHeight(heightMeasureSpec));
-
     }
 
     public void init(String text) {
@@ -77,10 +98,10 @@ public class PathTextView extends View {
         float singlefactor = mPhase * mDatas.size();
         for (int i = 0; i < mDatas.size(); i++) {
             Path path = new Path();
-            path.moveTo(mDatas.get(i)[0], mDatas.get(i)[1]);
-            path.lineTo(mDatas.get(i)[2], mDatas.get(i)[3]);
+            path.moveTo(mDatas.get(i)[0] * mScaleFactor + mTextWeight, mDatas.get(i)[1] * mScaleFactor + mTextWeight);
+            path.lineTo(mDatas.get(i)[2] * mScaleFactor + mTextWeight, mDatas.get(i)[3] * mScaleFactor + mTextWeight);
 
-            if (mType == TYPE.MULTIPY) {
+            if (mType == Type.MULTIPLY) {
                 PathMeasure measure = new PathMeasure(path, false);
                 Path dst = new Path();
                 measure.getSegment(0.0f, mPhase * measure.getLength(), dst, true);
@@ -124,7 +145,7 @@ public class PathTextView extends View {
         } else {
             // Measure the text
             result = (int) (mText.length() * BASE_SQUARE_UNIT * mScaleFactor + getPaddingLeft()
-                    + getPaddingRight());
+                    + getPaddingRight() + mTextWeight * 2);
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
                 result = Math.min(result, specSize);
@@ -143,9 +164,9 @@ public class PathTextView extends View {
             // We were told how big to be
             result = specSize;
         } else {
-            // Measure the text (beware: ascent is a negative number)
+            // Text wight(stoke width) may cause it a litter bigger
             result = (int) (BASE_SQUARE_UNIT * mScaleFactor) + getPaddingTop()
-                    + getPaddingBottom();
+                    + getPaddingBottom() + (int) (mTextWeight * 2);
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
                 result = Math.min(result, specSize);
