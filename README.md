@@ -11,24 +11,25 @@ Please waiting for loading the gif...
 
 #How to use
 
-- Add denpendence
+Step 1: add denpendence
 
 
     compile('com.dk.view.patheffect:Library:0.1.0@aar')
     
-- if you are still using `Eclipse`, you can just copy source code or jar file to you project.
+    
+ if you are still using `Eclipse`, you can just copy source code or jar file to you project.
 
 
-Step 1: add view yo your layout:
+Step 2: add view yo your layout:
 
     <com.dk.view.patheffect.PathTextView
         android:id="@+id/path"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-step 2: call `init` method like this:
+step 3: call `init` method like this:
 
-	PathTextView mPathTextView = (PathTextView) findViewById(R.id.path);
+    PathTextView mPathTextView = (PathTextView) findViewById(R.id.path);
 	mPathTextView.init("Hello World");
 
 Option settings:
