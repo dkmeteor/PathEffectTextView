@@ -325,12 +325,12 @@ public class MatchPath {
                 24, 60, 24, 72
         });
 
-        //右竖线
+        //
         addChar(V_LEFT, new float[]{
                 -12, 120, -12, 38,
                 -12, 38, -12, -45
         });
-        //上下横线
+        //
         addChar(H_TOP_BOTTOM, new float[]{
                 0, -45, 23, -45,
                 23, -45, 67, -45,
@@ -338,7 +338,7 @@ public class MatchPath {
                 23, 120, 67, 120
         });
 
-        //左竖线
+        //
         addChar(V_RIGHT, new float[]{
                 79, -45, 79, 38,
                 79, 38, 79, 120
