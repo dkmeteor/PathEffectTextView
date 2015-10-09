@@ -17,11 +17,13 @@ Step 1: add denpendence
 
     compile('com.dk.view.patheffect:Library:0.1.1@aar')
     
+
     
 If you are still using `Eclipse`, you can just copy source code or jar file to you project.
 
 
-Step 2: add view yo your layout:
+
+Step 2: add view to your layout:
 
     <com.dk.view.patheffect.PathTextView
         android:id="@+id/path"
@@ -40,7 +42,7 @@ Option settings:
     mPathTextView.setTextSize(size);
     mPathTextView.setTextWeight(weight);
     mPathTextView.setDuration(duration);
-	mPathTextView.setShadow(radius,dx,dy,shadowColor);
+	mPathTextView.setShadow(radius, dx, dy, shadowColor);
 
 #NOTE
 
