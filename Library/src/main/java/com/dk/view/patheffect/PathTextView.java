@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,6 +31,9 @@ public class PathTextView extends View {
     private int mTextColor = Color.BLACK;
     private float mTextSize = BASE_SQUARE_UNIT;
     private float mTextWeight = 2;
+    private float mShadowDy = 0;
+
+    private int mDuration = 3000;
 
     public enum Type {
         SINGLE, MULTIPLY
@@ -40,6 +44,16 @@ public class PathTextView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(mTextColor);
         mPaint.setStrokeWidth(mTextWeight);
+
+        /**
+         *  refer to http://stackoverflow.com/questions/27926105/android-paint-setshadowlayer-ignoring-shadowcolor
+         *
+         *  The shadowLayer works only it the hardware acceleration is disabled
+         */
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            setLayerType(LAYER_TYPE_SOFTWARE, mPaint);
+        }
     }
 
     public void setTextColor(int color) {
@@ -61,6 +75,28 @@ public class PathTextView extends View {
         mType = type;
     }
 
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
+
+    /**
+     * This draws a shadow layer below the main layer, with the specified
+     * offset and color, and blur radius. If radius is 0, then the shadow
+     * layer is removed.
+     * <p/>
+     * Can be used to create a blurred shadow underneath text. Support for use
+     * with other drawing operations is constrained to the software rendering
+     * pipeline.
+     * <p/>
+     * The alpha of the shadow will be the paint's alpha if the shadow color is
+     * opaque, or the alpha from the shadow color if not.
+     */
+    public void setShadow(int radius, int dx, int dy, int color) {
+//        mPaint.clearShadowLayer();
+        mShadowDy = dy;
+        mPaint.setShadowLayer(radius, dx, dy, color);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(measureWidth(widthMeasureSpec),
@@ -76,7 +112,7 @@ public class PathTextView extends View {
 
         mText = text;
         mDatas = MatchPath.getPath(mText);
-        mSvgAnimator = ObjectAnimator.ofFloat(this, "phase", 0.0f, 1.0f).setDuration(3000);
+        mSvgAnimator = ObjectAnimator.ofFloat(this, "phase", 0.0f, 1.0f).setDuration(mDuration);
         mSvgAnimator.start();
     }
 
@@ -166,7 +202,7 @@ public class PathTextView extends View {
         } else {
             // Text wight(stoke width) may cause it a litter bigger
             result = (int) (BASE_SQUARE_UNIT * mScaleFactor) + getPaddingTop()
-                    + getPaddingBottom() + (int) (mTextWeight * 2);
+                    + getPaddingBottom() + (int) (mTextWeight * 2) + (int) mShadowDy;
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
                 result = Math.min(result, specSize);

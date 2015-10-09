@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="Hello"
             android:hint="Input" />
 
         <Button
@@ -47,6 +48,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="TextWeight" />
+
+    <EditText
+        android:id="@+id/shadow_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Shadow Weight" />
+
+    <EditText
+        android:id="@+id/shadow_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Shadow Color" />
 
     <RadioGroup
         android:id="@+id/radio_group"

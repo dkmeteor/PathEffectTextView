@@ -11,7 +11,7 @@ import com.dk.view.patheffect.PathTextView;
 
 public class MainActivity extends ActionBarActivity {
     private PathTextView mPathTextView;
-    private EditText mEditText, mColorEditText, mSizeEditText, mWeightEditText;
+    private EditText mEditText, mColorEditText, mSizeEditText, mWeightEditText,mShadowWeight,mShadowColor;
     private RadioButton mSingle, mMultiply;
 
     @Override
@@ -23,6 +23,8 @@ public class MainActivity extends ActionBarActivity {
         mColorEditText = (EditText) findViewById(R.id.color);
         mSizeEditText = (EditText) findViewById(R.id.size);
         mWeightEditText = (EditText) findViewById(R.id.weight);
+        mShadowWeight = (EditText) findViewById(R.id.shadow_weight);
+        mShadowColor = (EditText) findViewById(R.id.shadow_color);
         mSingle = (RadioButton) findViewById(R.id.radio_single);
         mMultiply = (RadioButton) findViewById(R.id.radio_multiply);
 
@@ -43,20 +45,44 @@ public class MainActivity extends ActionBarActivity {
                         color = Integer.parseInt(colorText);
                     }
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
                 int size = 72;
                 try {
                     size = Integer.parseInt(sizeText);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
                 int weight = 2;
                 try {
                     weight = Integer.parseInt(weightText);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
+
+                String shadowWeightText = mShadowWeight.getText().toString();
+
+                int shadowWeight = weight / 2;
+                try {
+                    shadowWeight = Integer.parseInt(shadowWeightText);
+                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+                }
+
+                String shdowColorText =mShadowColor.getText().toString();
+                int shadowColor = Color.GRAY;
+                try {
+                    if (shdowColorText.contains("#")) {
+//                        colorText = colorText.replace("#","");
+                        shadowColor = Color.parseColor(shdowColorText);
+                    } else {
+                        shadowColor = Integer.parseInt(shdowColorText);
+                    }
+                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+                }
+
+
 
                 if (mSingle.isChecked())
                     mPathTextView.setPaintType(PathTextView.Type.SINGLE);
@@ -66,6 +92,9 @@ public class MainActivity extends ActionBarActivity {
                 mPathTextView.setTextColor(color);
                 mPathTextView.setTextSize(size);
                 mPathTextView.setTextWeight(weight);
+                mPathTextView.setDuration(2000);
+                //need alpha
+                mPathTextView.setShadow(shadowWeight,shadowWeight,shadowWeight,shadowColor);
                 mPathTextView.init(mEditText.getText().toString());
             }
         });
