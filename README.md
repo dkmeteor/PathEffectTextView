@@ -39,6 +39,8 @@ Option settings:
     mPathTextView.setTextColor(color);
     mPathTextView.setTextSize(size);
     mPathTextView.setTextWeight(weight);
+    mPathTextView.setDuration(duration);
+	mPathTextView.setShadow(radius,dx,dy,shadowColor);
 
 #NOTE
 
