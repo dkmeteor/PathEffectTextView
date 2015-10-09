@@ -93,7 +93,6 @@ public class MainActivity extends ActionBarActivity {
                 mPathTextView.setTextSize(size);
                 mPathTextView.setTextWeight(weight);
                 mPathTextView.setDuration(2000);
-                //need alpha
                 mPathTextView.setShadow(shadowWeight,shadowWeight,shadowWeight,shadowColor);
                 mPathTextView.init(mEditText.getText().toString());
             }

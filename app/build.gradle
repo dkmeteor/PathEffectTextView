@@ -23,4 +23,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.+'
     compile project(':Library')
+//    compile('com.dk.view.patheffect:Library:0.1.1@aar')
 }
