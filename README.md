@@ -8,16 +8,17 @@ Please waiting for loading the gif...
 
 ![](/path3.gif)
 
+![] (/path4.gif)
 
 #How to use
 
 Step 1: add denpendence
 
 
-    compile('com.dk.view.patheffect:Library:0.1.0@aar')
+    compile('com.dk.view.patheffect:Library:0.1.1@aar')
     
     
- if you are still using `Eclipse`, you can just copy source code or jar file to you project.
+If you are still using `Eclipse`, you can just copy source code or jar file to you project.
 
 
 Step 2: add view yo your layout:
