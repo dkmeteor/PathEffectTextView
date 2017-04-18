@@ -1,4 +1,4 @@
-#Screenshot
+# Screenshot
 
 Please waiting for loading the gif...
 
@@ -10,7 +10,7 @@ Please waiting for loading the gif...
 
 ![] (/path4.gif)
 
-#How to use
+# How to use
 
 Step 1: add denpendence
 
@@ -44,7 +44,7 @@ Option settings:
     mPathTextView.setDuration(duration);
 	mPathTextView.setShadow(radius, dx, dy, shadowColor);
 
-#NOTE
+# NOTE
 
 - Only Support capital letter, you can check this file for [`Path Data`](https://github.com/dkmeteor/PathEffectTextView/blob/master/Library/src/main/java/com/dk/view/patheffect/MatchPath.java), the data comes from [android-Ultra-Pull-To-Refresh](https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh/)
 
@@ -53,7 +53,7 @@ Option settings:
 - the text weight unit is px.
  
 
-#License
+# License
 
     Copyright 2015 Dean Ding
 
